@@ -122,11 +122,21 @@ app.post('/getJojoTip', async (req, res) => {
   }
 });
 
-export default app;
-
-const PORT = 3000;
+//const PORT = 3000;
 
 // Mandar o Express "ouvir" nessa porta
-app.listen(PORT, () => {
-  console.log(`[LOG API] Servidor Express (Dados) a rodar na porta ${PORT}`);
-});
+//app.listen(PORT, () => {
+//  console.log(`[LOG API] Servidor Express (Dados) a rodar na porta ${PORT}`);
+//});
+
+const PORT = process.env.PORT || 3000;
+
+// Só iniciamos o servidor se NÃO estivermos na Vercel
+// A Vercel define process.env.VERCEL como '1' ou true
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Servidor a correr na porta ${PORT}`);
+  });
+}
+
+export default app;
