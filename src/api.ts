@@ -135,7 +135,7 @@ const PORT = process.env.PORT || 3000;
 // A Vercel define process.env.VERCEL como '1' ou true
 if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => {
-    console.log(`Servidor a correr na porta ${PORT}`);
+    console.log(`Servidor rodando na porta ${PORT}`);
   });
 }
 

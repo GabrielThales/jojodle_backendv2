@@ -1,7 +1,6 @@
 import { initializeApp, cert, getApps, ServiceAccount } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 
-import serviceAccount from '../service-account.json' with { type: "json" };
 import { assert } from 'console';
 
 console.log("[LOG] firebaseService.ts - Iniciando Firebase...");
