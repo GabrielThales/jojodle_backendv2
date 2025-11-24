@@ -5,8 +5,8 @@ import { z } from 'zod';
 // Importamos nosso banco de dados
 import { type Character } from './schemas.js'; // Importamos o TIPO
 import { getJojoTipLogic } from './index.js';
-import { get } from 'http';
 import type { CorsOptions } from 'cors';
+import { apiLimiter } from './middlewares/rateLimiter.js';
 
 console.log("[LOG API] Ficheiro api.ts CARREGADO.");
 
@@ -31,8 +31,8 @@ setInterval(() => {
 
  const app = express();
 
-// Lista de domínios permitidos
-const whitelist = ['https://jojodle-blond.vercel.app', 'http://127.0.0.1:5500'];
+// Lista de domínios permitidos // 'http://127.0.0.1:5500' LOCAL
+const whitelist = ['https://jojodle-blond.vercel.app'];
 
 const corsOptions: CorsOptions = {
   origin: (origin, callback) => {
@@ -53,6 +53,7 @@ const corsOptions: CorsOptions = {
 app.use(cors(corsOptions));
 
 app.use(express.json());
+app.use(apiLimiter);
 
 app.use((req, res, next) => {
   console.log(`[LOG API] Pedido recebido: ${req.method} ${req.originalUrl}`);
