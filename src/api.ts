@@ -27,25 +27,32 @@ setInterval(() => {
 }, 60 * 60 * 1000); // Check every hour (adjust as needed for precision)
 
 // 1. Criar a app Express
-const app = express();
+ // Permite que a app entenda JSON
 
-// 2. Usar Middlewares
-// O seu frontend vai estar em, por exemplo, "https://meu-jojodle.com"
+ const app = express();
+
+// Lista de domínios permitidos
 const whitelist = ['https://jojodle-blond.vercel.app', 'http://127.0.0.1:5500'];
 
 const corsOptions: CorsOptions = {
-  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-    if (whitelist.indexOf(origin!) !== -1 || !origin) {
-      callback(null, true);
+  origin: (origin, callback) => {
+    // Verificação detalhada:
+    // 1. !origin: Permite requisições sem 'Origin' (como Postman, Apps Mobile, ou backend-to-backend).
+    //    Se quiseres bloquear tudo que não seja navegador, remove o "!origin ||".
+    // 2. whitelist.indexOf(origin) !== -1: Verifica se a origem está na lista.
+    
+    if (!origin || whitelist.indexOf(origin) !== -1) {
+      callback(null, true); // Permite o acesso
     } else {
-      callback(new Error('Não permitido pelo CORS'));
+      callback(new Error('Acesso negado por CORS: Origem não permitida.')); // Bloqueia
     }
   }
 };
 
+// Aplica o middleware CORS antes das rotas
 app.use(cors(corsOptions));
-//app.use(cors({ origin: true })); // Permite chamadas de qualquer origem
-app.use(express.json()); // Permite que a app entenda JSON
+
+app.use(express.json());
 
 app.use((req, res, next) => {
   console.log(`[LOG API] Pedido recebido: ${req.method} ${req.originalUrl}`);
