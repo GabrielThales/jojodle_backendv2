@@ -31,6 +31,8 @@ setInterval(() => {
 
  const app = express();
 
+ app.set('trust proxy', 1);
+
 // Lista de domínios permitidos // 'http://127.0.0.1:5500' LOCAL
 const whitelist = ['https://jojodle-blond.vercel.app'];
 
